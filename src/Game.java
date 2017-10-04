@@ -1,11 +1,12 @@
 import java.awt.*;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 
-public class Game implements Runnable, KeyListener {
+public class Game implements Runnable {
 
     private Thread thread;
     private boolean running = false;
@@ -23,24 +24,25 @@ public class Game implements Runnable, KeyListener {
         this.width = width;
         this.height = height;
         this.title = title;
-        Human = new HumanPaddle(Color.CYAN);
-        addKeyListener(this);
     }
 
 
 
     private void init() {
         display = new Display(title, width, height);
+        Human = new HumanPaddle();
+        addKeyListener(new TAdapter());
     }
 
     public void update() {
-        Human.update();
-
+        Human.move();
     }
+
     private void tick() {
         update();
     }
-//Only need to put "Updated items" in here; Renders to screen
+
+
     private void render() {
         bs = display.getCanvas().getBufferStrategy();
         if(bs == null) {
@@ -51,7 +53,9 @@ public class Game implements Runnable, KeyListener {
         //Clear Screen
         g.clearRect(0,0,width,height);
         //Draw Here
-        g.fill(Human.getLocation());
+        g.setColor(Color.CYAN);
+        g.fillRect(0, Human.getY(), 30, 80);
+
 
 
 
@@ -102,14 +106,18 @@ public class Game implements Runnable, KeyListener {
             e.printStackTrace();
         }
     }
+    private class TAdapter extends KeyAdapter {
 
-    public void keyPressed(KeyEvent e) {
-        Human.pressed(e.getKeyCode());
+        @Override
+        public void keyReleased(KeyEvent e) {
+            Human.keyReleased(e);
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            Human.keyPressed(e);
+        }
     }
 
-    public void keyReleased(KeyEvent e) {
-        Human.released(e.getKeyCode());
-    }
-    public void keyTyped(KeyEvent e){;}
 
 }
