@@ -31,12 +31,14 @@ public class Game implements Runnable {
     private void render() {
         bs = display.getCanvas().getBufferStrategy();
         if(bs == null) {
-            display.getCanvas().createBufferStrategy(3);
+            display.getCanvas().createBufferStrategy(2);
             return;
         }
         g = bs.getDrawGraphics();
+        //Clear Screen
+        g.clearRect(0,0,width,height);
         //Draw Here
-        g.fillRect(0,0,100,100);
+
 
 
         //End Drawing
@@ -49,9 +51,23 @@ public class Game implements Runnable {
 
         init();
 
+        int fps = 60;
+        double timePerTick = 1000000000 / fps;
+        double delta = 0;
+        long now;
+        long lastTime = System.nanoTime();
+
+
         while(running) {
-            tick();
-            render();
+            now = System.nanoTime();
+            delta += (now - lastTime) / timePerTick;
+            lastTime = now;
+
+            if(delta >= 1) {
+                tick();
+                render();
+                delta--;
+            }
         }
 
         stop();
@@ -72,4 +88,5 @@ public class Game implements Runnable {
             e.printStackTrace();
         }
     }
+
 }
