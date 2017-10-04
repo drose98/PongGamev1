@@ -1,7 +1,11 @@
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 
-public class Game implements Runnable {
+import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
+
+public class Game implements Runnable, KeyListener {
 
     private Thread thread;
     private boolean running = false;
@@ -11,33 +15,43 @@ public class Game implements Runnable {
     private BufferStrategy bs;
     private Graphics g;
 
+    HumanPaddle Human;
+    AIPaddle AI;
 
+//Constructor
     public Game(String title, int width, int height) {
         this.width = width;
         this.height = height;
         this.title = title;
-
+        Human = new HumanPaddle(Color.CYAN);
+        addKeyListener(this);
     }
+
 
 
     private void init() {
         display = new Display(title, width, height);
     }
 
-    private void tick() {
+    public void update() {
+        Human.update();
 
     }
-
+    private void tick() {
+        update();
+    }
+//Only need to put "Updated items" in here; Renders to screen
     private void render() {
         bs = display.getCanvas().getBufferStrategy();
         if(bs == null) {
-            display.getCanvas().createBufferStrategy(2);
+            display.getCanvas().createBufferStrategy(3);
             return;
         }
         g = bs.getDrawGraphics();
         //Clear Screen
         g.clearRect(0,0,width,height);
         //Draw Here
+        g.fill(Human.getLocation());
 
 
 
@@ -46,7 +60,7 @@ public class Game implements Runnable {
         g.dispose();
     }
 
-    @Override
+    @Override   //Loop engine
     public void run() {
 
         init();
@@ -88,5 +102,14 @@ public class Game implements Runnable {
             e.printStackTrace();
         }
     }
+
+    public void keyPressed(KeyEvent e) {
+        Human.pressed(e.getKeyCode());
+    }
+
+    public void keyReleased(KeyEvent e) {
+        Human.released(e.getKeyCode());
+    }
+    public void keyTyped(KeyEvent e){;}
 
 }

@@ -30,6 +30,7 @@ public class Display {
             canvas.setPreferredSize(new Dimension(width, height));
             canvas.setMaximumSize(new Dimension(width, height));
             canvas.setMinimumSize(new Dimension(width, height));
+            canvas.setBackground(Color.DARK_GRAY);
 
             frame.add(canvas);
             frame.pack();
