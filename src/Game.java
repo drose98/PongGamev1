@@ -31,7 +31,8 @@ public class Game implements Runnable {
     private void init() {
         display = new Display(title, width, height);
         Human = new HumanPaddle();
-        addKeyListener(new TAdapter());
+        KeyListener klistener = new myKeyListener();
+        addKeyListener(klistener);
     }
 
     public void update() {
@@ -104,18 +105,6 @@ public class Game implements Runnable {
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-    }
-    private class TAdapter extends KeyAdapter {
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            Human.keyReleased(e);
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            Human.keyPressed(e);
         }
     }
 
