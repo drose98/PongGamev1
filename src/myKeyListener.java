@@ -1,11 +1,20 @@
-import javafx.scene.input.KeyCode;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class myKeyListener implements KeyListener {
 
-    private boolean isUp = false, isDown = false;
+
+    private boolean[] keys;
+    public boolean up, down;
+
+    public myKeyListener(){
+        keys = new boolean[256];
+    }
+
+    public void tick(){
+        up = keys[KeyEvent.VK_UP];
+        down = keys[KeyEvent.VK_DOWN];
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -13,30 +22,13 @@ public class myKeyListener implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-        if(key == KeyEvent.VK_UP {
-            isUp = true;
-        }
-        if(key == KeyEvent.VK_DOWN) {
-            isDown = true;
-        }
+        keys[e.getKeyCode()] = true;
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-        if(key == KeyEvent.VK_UP {
-            isUp = false;
-        }
-        if(key == KeyEvent.VK_DOWN) {
-            isDown = false;
-        }
+        keys[e.getKeyCode()] = false;
     }
 
-    public boolean getUp() {
-        return isUp;
-    }
-    public boolean getDown() {
-        return isDown;
-    }
+
 }

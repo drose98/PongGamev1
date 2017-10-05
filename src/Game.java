@@ -1,3 +1,4 @@
+import javax.net.ssl.KeyManager;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -18,29 +19,35 @@ public class Game implements Runnable {
 
     HumanPaddle Human;
     AIPaddle AI;
+    Ball ball;
 
 //Constructor
     public Game(String title, int width, int height) {
         this.width = width;
         this.height = height;
         this.title = title;
+        keyManager = new myKeyListener();
+    }
+    private void itemInit() {
+        Human = new HumanPaddle(this);
+        AI = new AIPaddle(this);
+        ball = new Ball(this);
     }
 
-
+    private myKeyListener keyManager;
 
     private void init() {
         display = new Display(title, width, height);
-        Human = new HumanPaddle();
-        KeyListener klistener = new myKeyListener();
-        addKeyListener(klistener);
+        display.getFrame().addKeyListener(keyManager);
+        itemInit();
     }
 
-    public void update() {
-        Human.move();
-    }
 
     private void tick() {
-        update();
+        keyManager.tick();
+        Human.tick();
+        AI.tick();
+        ball.tick();
     }
 
 
@@ -54,9 +61,9 @@ public class Game implements Runnable {
         //Clear Screen
         g.clearRect(0,0,width,height);
         //Draw Here
-        g.setColor(Color.CYAN);
-        g.fillRect(0, Human.getY(), 30, 80);
-
+        Human.render(g);
+        AI.render(g);
+        ball.render(g);
 
 
 
@@ -92,6 +99,10 @@ public class Game implements Runnable {
         stop();
     }
 
+    public myKeyListener getKeyManager() {
+        return keyManager;
+    }
+
     public synchronized void start() {
         if(running) return;
         running = true;
@@ -106,6 +117,12 @@ public class Game implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    public HumanPaddle getHuman() {
+        return Human;
+    }
+    public AIPaddle getAI() {
+        return AI;
     }
 
 
