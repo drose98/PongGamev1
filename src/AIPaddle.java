@@ -34,9 +34,6 @@ public class AIPaddle {
         return pHeight;
     }
 
-    public int getX() {
-        return x;
-    }
 
     public int getY() {
         return y;

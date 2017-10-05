@@ -5,7 +5,7 @@ public class myKeyListener implements KeyListener {
 
 
     private boolean[] keys;
-    public boolean up, down;
+    public boolean up, down, enter;
 
     public myKeyListener(){
         keys = new boolean[256];
@@ -14,6 +14,7 @@ public class myKeyListener implements KeyListener {
     public void tick(){
         up = keys[KeyEvent.VK_UP];
         down = keys[KeyEvent.VK_DOWN];
+        enter = keys[KeyEvent.VK_ENTER];
     }
 
     @Override
