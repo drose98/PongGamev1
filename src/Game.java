@@ -77,6 +77,7 @@ public class Game implements Runnable {
 
         init();
 
+
         int fps = 60;
         double timePerTick = 1000000000 / fps;
         double delta = 0;
